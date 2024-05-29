@@ -5,15 +5,17 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 5f; // Ensure a default speed is set
+    [SerializeField] private LayerMask groundLayer;
     private Rigidbody2D body;
     private Animator anim;
-    private bool Grounded;
+    private BoxCollider2D boxCollider;
 
     // This should be the only Awake method in this class
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        boxCollider = GetComponent<BoxCollider2D>
     }
 
     private void FixedUpdate()
@@ -27,12 +29,12 @@ public class PlayerMovement : MonoBehaviour
         else if (horizontalInput < -0.01f)
             transform.localScale = new Vector3(-1, 1, 1);
 
-        if (Input.GetKey(KeyCode.Space) && Grounded)
+        if (Input.GetKey(KeyCode.Space) && isGrounded())
             Jump();
 
 
         anim.SetBool("Run", horizontalInput != 0);
-        anim.SetBool("Grounded", Grounded);
+        anim.SetBool("Grounded", isGrounded());
     }
 
 
@@ -40,12 +42,14 @@ public class PlayerMovement : MonoBehaviour
     {
         body.velocity = new Vector2(body.velocity.x, speed);
         anim.SetTrigger("jump");
-        Grounded = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
-            Grounded = true; 
+    }
+
+    private bool isGrounded() {
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
+        return false;
     }
 }
