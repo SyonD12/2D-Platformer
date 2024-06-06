@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
+   [Header ("Health")]
    [SerializeField] private float startingHealth;
    public float currentHealth { get; private set; }      //changed to public so the healthbar script can access, added some constructer things to make sure cant be accessed from anywhere
    private Animator anim;
+   private bool dead;
+
+   [Header ("iFrames")]
+   [SerializeField] private float invulnerabilityDuration;
+
 
    private void Awake() {
        currentHealth = startingHealth;
@@ -19,11 +25,20 @@ public class Health : MonoBehaviour
         if (currentHealth > 0) {
             //checking if player hurt
             anim.SetTrigger("hurt");
+            //iframs
         }
         else {
+            if (!dead){
             //player dead
-            anim.SetTrigger("die");
+                anim.SetTrigger("die");
+                GetComponent<PlayerMovement>().enabled = false;
+                dead = true;
+            }
         }
+   }
+
+   public void AddHealth(float _value){
+        currentHealth = Mathf.Clamp(currentHealth + _value, 0, startingHealth);
    }
 
    /*private void Update() {
