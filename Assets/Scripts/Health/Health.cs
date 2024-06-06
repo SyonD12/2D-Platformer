@@ -45,6 +45,12 @@ public class Health : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth + _value, 0, startingHealth);
    }
 
+   public void Respawn(){
+        AddHealth(startingHealth);
+        anim.ResetTrigger("die");
+        anim.Play("Idle");
+   }
+
    /*private IEnumerator Invulnerability() {
         Physics2D.IgnoreLayerCollision();
    }*/

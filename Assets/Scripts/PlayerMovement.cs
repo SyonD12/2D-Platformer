@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpPower;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
+   // [SerializeField] private LayerMask platformLayer;
     private Rigidbody2D body;
     private Animator anim;
     private BoxCollider2D boxCollider;
@@ -66,6 +67,10 @@ public class PlayerMovement : MonoBehaviour
            body.velocity = new Vector2(body.velocity.x, jumpPower);
            anim.SetTrigger("jump");
         }
+        //else if (onPlatform()){
+         //   body.velocity = new Vector2(body.velocity.x, jumpPower);
+         //   anim.SetTrigger("jump");
+        //}
         else if(onWall() && !isGrounded()) 
         {
             if(horizontalInput == 0)
@@ -92,6 +97,12 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
         return raycastHit.collider != null;
     }
+
+   /* private bool onPlatform() {
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, platformLayer);
+        return raycastHit.collider != null;
+    }*/
+
     public bool canAttack()
     {
         return horizontalInput == 0 && isGrounded() && !onWall();
