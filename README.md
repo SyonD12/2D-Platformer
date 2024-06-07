@@ -1,0 +1,1 @@
+Our github is not part of the Skyline Repository because the template to create a repo part of Skyline automatically sets it with a certain IDE, which is not compatible with Unity. Therefore, we made this github as separate, however it still should contain all of the necessary files. 
